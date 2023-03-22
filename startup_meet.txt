@@ -1,0 +1,82 @@
+=== Thesis Start Meeting - 2023-03-17 ===
+=== Storm ===
+Create a mirror of Storm on LiU Gitlab for the actual thesis
+- git://storm-lang.org/storm.git
+
+To create a local copy and compile from source
+- git clone git://storm-lang.org/storm.git
+- git submodule init
+- git submodule update
+- Due to some cloning stuff for the server tests failing some directories might not update correctly. Run the command git status to see which directories is missing files and cd into them and run 'git checkout -f'
+- This needs to be compiled from the cource code using the tool "mymake"
+- sudo apt install mymake
+- mymake --config -> set preferred number of cores(check with less /proc/cpuinfo)
+- sudo apt install libgtk-3-dev -y
+- sudo apt install libgl-dev -y
+- sudo apt install libopenal-dev -y
+- sudo apt install libssl-dev -y
+- mymake Main
+
+
+=== Storm Directories ===
+- Each directory represents a mymake project.
+
+== Compiler ==
+- Where everything regarding the compiler is located, for isntance datatypes, etc
+
+== Gui ==
+- Things related to writing stuff, will be interesting to udnerstand progvis
+
+== SQL ==
+- Implements SQLite
+
+== root ==
+- This directory is representative of the root in the nametree. the lang subdirectory has the bs and bnf for the language. the tests subdirectory has sql tests.
+
+== Test ==
+- Testall
+
+== .myproject ==
+- The mymake file
+
+== Main ==
+- Runs the interactive environment where you can typ commands in the cli
+
+
+=== When developing ===
+- When compiling with mymake you can use the -a flag to send arguments to the program that will run after the compilation is done.
+- For instance the -f flag to specify run a certain function
+- mymake Main (flags to mymake) -a (flags to the program that is compiled)
+- mymake Main -a -f tests.sql.main
+- 'mymake -?' or 'man mymake' to see information about how mymake works or check the git https://github.com/fstromback/mymake
+
+== emacs mymake setup ==
+- git clone https://github.com/fstromback/mymake
+- In the .emacs fil add the commands:
+(load "~/mymake/mm-compile.el")
+(load "~/storm/Plugin/emacs.el")
+(setq mymake-command "mymake")
+(setq storm-mode-root "~/storm/root")
+(setq storm-mode-compiler "~/storm/debug/Storm")
+(setq storm-mode-include '())
+(setq storm-mode-compile-compiler t)
+- Check that the paths are correct depending on where you put the mymake and storm repositories.
+- Commands for the emacs plugin is available in the mm-compile.el file (If you understand emacs lisp) unfortunately there is no other documentation.
+-
+
+
+===  ===
+
+===  ===
+
+===  ===
+
+===  ===
+
+===  ===
+
+===  ===
+
+===  ===
+
+===  ===
