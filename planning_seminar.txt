@@ -1,0 +1,25 @@
+=== Planning Meeting Thesis ===
+- Jody handledare, Peter examinator
+-
+
+=== TODO: ===
+- [X] Wexupp anmälan: https://www.ida.liu.se/wexupp/student/application?department=IDA&faculty=TFK
+- [X] Fakultet anmälan: https://www.lith.liu.se/for-studenter/anmalan-till-exjobb?l=en
+- [X] Påbörja litteraturstudien för att se om vi kan hitta något underlag för att extrahera notional machines ifrån en text samt om vi kan hitta något vedertaget sätt att utvärdera notional machines enligt learning principles
+- [X] Dra igång en kanban board för exjobbet
+- 
+
+=== Wexupp ===
+- Projektspecifikationen är planeringsrapporten/behövs ej
+- Går till Jody och Peter så det är inte superviktigt, bara formalitet att gå igenom
+
+=== Feedback Planning ===
+- Rapporten måste vara tillräckligt klar för att opponenten ska ha en rimlig chans att opponera
+- Rapporten måste inte vara helt klar vid framläggningen utan vi kan få feedback ifrån handledare/examinator som vi då fixar till senaste datum på inlämning
+
+
+=== Inför Handledningsmöte ===
+- Prel frågeställning inför mötet
+- Fundera igenom vilka grejer som måste vara/är önskvärda för rapporten i sig och rangordning av dem
+- Bena ut lite mer i TBD
+- 
