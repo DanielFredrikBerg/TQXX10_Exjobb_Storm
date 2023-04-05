@@ -1,0 +1,155 @@
+\documentclass{sigchi}
+%Compile with command: latexmk -pdf -pvc proceedings.tex
+
+% Arabic page numbers for submission.  Remove this line to eliminate
+% page numbers for the camera ready copy
+\pagenumbering{arabic}
+
+% Load basic packages
+\usepackage{balance}       % to better equalize the last page
+\usepackage{graphics}      % for EPS, load graphicx instead 
+\usepackage[T1]{fontenc}   % for umlauts and other diaeresis
+\usepackage{txfonts}
+\usepackage{mathptmx}
+\usepackage[pdflang={en-US},pdftex]{hyperref}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{textcomp}
+
+
+% Some optional stuff you might like/need.
+\usepackage{microtype}        % Improved Tracking and Kerning
+% \usepackage[all]{hypcap}    % Fixes bug in hyperref caption linking
+\usepackage{ccicons}          % Cite your images correctly!
+% \usepackage[utf8]{inputenc} % for a UTF8 editor only
+
+% If you want to use todo notes, marginpars etc. during creation of
+% your draft document, you have to enable the "chi_draft" option for
+% the document class. To do this, change the very first line to:
+% "\documentclass[chi_draft]{sigchi}". You can then place todo notes
+% by using the "\todo{...}"  command. Make sure to disable the draft
+% option again before submitting your final document.
+\usepackage{todonotes}
+
+% Paper metadata (use plain text, for PDF inclusion and later
+% re-using, if desired).  Use \emtpyauthor when submitting for review
+% so you remain anonymous.
+\def\plaintitle{Program Visualization of Java in Storm}
+\def\plainauthor{Simon Ahrenstedt}
+\def\emptyauthor{}
+\def\plainkeywords{Authors' choice; of terms; separated; by
+  semicolons; include commas, within terms only; this section is required.}
+\def\plaingeneralterms{Documentation, Standardization}
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{
+    \def\UrlFont{\sf}
+  }{
+    \def\UrlFont{\small\bf\ttfamily}
+  }}
+\makeatother
+\urlstyle{leo}
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages, to give it a
+% fighting chance of not being over-written, since its job is to
+% redefine many LaTeX commands.
+\definecolor{linkColor}{RGB}{6,125,233}
+\hypersetup{%
+  pdftitle={\plaintitle},
+% Use \plainauthor for final version.
+%  pdfauthor={\plainauthor},
+  pdfauthor={\emptyauthor},
+  pdfkeywords={\plainkeywords},
+  pdfdisplaydoctitle=true, % For Accessibility
+  bookmarksnumbered,
+  pdfstartview={FitH},
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=linkColor,
+  breaklinks=true,
+  hypertexnames=false
+}
+
+% create a shortcut to typeset table headings
+% \newcommand\tabhead[1]{\small\textbf{#1}}
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+\title{\plaintitle}
+
+\numberofauthors{2}
+\author{%
+  \alignauthor{Simon Ahrenstedt\\ \email{simah964@student.liu.se}}\\
+  \alignauthor{Daniel Huber\\ \email{danhu849@student.liu.se}}\\
+}
+
+\maketitle
+% https://www.ida.liu.se/edu/ugrad/thesis/templates/Exjobb_instruction_150313.pdf
+\section{Introduction}
+One of the key concepts that any new Computer Science students must learn is how a computer executes code. Unfortunately the educational tools that exist is often reliant upon a mere textual or verbal description coupled with an abstract drawing on a whiteboard or a figure on a screen to construct the notional machine for the concept. The often touted solution for improving the teaching of this concept is a program visualization tool \cite{Hidalgo:2016}.
+
+There are a great number of program visualization tools available for various target audiences, environment and programming languages \cite{Sorva:2013} and whilst visualization in and of itself is not the be-all end-all solution to said problem it is an important piece of the puzzle of programming education moving forward.
+
+\subsection{Motivation}
+In order for a program visualization tool to be an effective aid in education its design should be based around a theoretical framework in learning theory~\cite{Hidalgo:2016}. The issue with many current program visualization tools is that they simply do not base their design around learning principles and thus have been proven to have a limited effectiveness~\cite{Naps:2002}. If the available visualization tools are not all effective then a barrier of entry exists due to the perceived risk of wasting time adapting the current curriculum to tool that may or may not be effective. This results in an additional problem from the point of view of the educator, \emph{id est} instructor overhead.
+
+If an instructor is unable to adapt the visualization tool to the curriculum in the correct manner it will be of little educational value. In order for it to be an effective learning tool it must be adaptable enough to enable active learning engagement which results in a higher level of understanding for the student in regard to Bloom's taxonomy of understanding~\cite{Naps:2002}. 
+
+\subsection{Aim}
+The aim of this thesis is to evaluate the 
+
+The aim of this thesis is to identify the appropriate learning principles to base a progarm visualization tool on for introductory programming courses in Java at LiU, evaluate the possibility of implementing this in \emph{Storm} and then create a system for visualizing the runtime of Java programs in \emph{Storm}.
+
+\emph{Storm} is an interactive compiler platform for creating languages created by Filip Strömbäck. The Storm compiler has support for a language called \emph{Basic Storm} as well as a BNF syntax language that can be used in combination with the \emph{Progvis} program visualization framework and built-in parser support to create a program visualization tool for Java~\cite{Stromback:2017,Stromback:2018,Storm:2023}.
+
+\subsection{Research Question}
+In this paper, we will answer the following questions:
+
+\begin{enumerate}
+\item Is it possible to use the BNF syntax language, syntax transforms and parser support in \emph{Storm} to correctly parse Java code?
+\item Is it possible to use the program visualization tool \emph{Progvis} available in \emph{Storm} to visualize the runtime of Java applications in accordance with the learning principles of question 1?
+\end{enumerate}
+
+\subsection{Delimitations}
+Due to the scope of the project only a subset of Java will be implemented based on teaching requirements of introductory courses for Java at LiU. 
+
+asdasd
+
+
+
+% BALANCE COLUMNS
+\balance{}
+
+% REFERENCES FORMAT
+% References must be the same font size as other body text.
+\bibliographystyle{SIGCHI-Reference-Format}
+\bibliography{sample}
+
+\newpage
+\appendix{}
+\section{Feedback and changes from seminar 3}
+
+
+\begin{itemize}
+\item 
+\end{itemize}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
