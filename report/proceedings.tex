@@ -34,7 +34,7 @@
 % Paper metadata (use plain text, for PDF inclusion and later
 % re-using, if desired).  Use \emtpyauthor when submitting for review
 % so you remain anonymous.
-\def\plaintitle{Program Visualization of Java in Storm}
+\def\plaintitle{Implementing a Java compiler using the Storm Platform}
 \def\plainauthor{Simon Ahrenstedt}
 \def\emptyauthor{}
 \def\plainkeywords{Authors' choice; of terms; separated; by
@@ -99,37 +99,45 @@
 
 \maketitle
 % https://www.ida.liu.se/edu/ugrad/thesis/templates/Exjobb_instruction_150313.pdf
+% \todo[inline]{}
 \section{Introduction}
-One of the key concepts that any new Computer Science students must learn is how a computer executes code. Unfortunately the educational tools that exist is often reliant upon a mere textual or verbal description coupled with an abstract drawing on a whiteboard or a figure on a screen to construct the notional machine for the concept. The often touted solution for improving the teaching of this concept is a program visualization tool \cite{Hidalgo:2016}.
+Storm is a programming language platform that provides the building blocks upon which it is possible to build programming languages that are able to interact freely through exposing an extensible type system, a parser generator and a code generator to all languages which desire to use them \cite{stromback:2018}. The Storm platform itself is language agnostic and the work of Falk\cite{} serves as a feasibility study proving that basic Java functionality can be implemented using the Storm platform.
 
-There are a great number of program visualization tools available for various target audiences, environment and programming languages \cite{Sorva:2013} and whilst visualization in and of itself is not the be-all end-all solution to said problem it is an important piece of the puzzle of programming education moving forward.
+The interesting question is to what extent the Storm platform is able to handle the implementation of a complex language like Java and also what problems arise along the way considering the lackluster availability of documentation and tutorials due to the relative novelty of the Storm platform.
 
 \subsection{Motivation}
-In order for a program visualization tool to be an effective aid in education its design should be based around a theoretical framework in learning theory~\cite{Hidalgo:2016}. The issue with many current program visualization tools is that they simply do not base their design around learning principles and thus have been proven to have a limited effectiveness~\cite{Naps:2002}. If the available visualization tools are not all effective then a barrier of entry exists due to the perceived risk of wasting time adapting the current curriculum to tool that may or may not be effective. This results in an additional problem from the point of view of the educator, \emph{id est} instructor overhead.
+Creating a compiler from scratch is a time consuming undertaking with a number of distinct subproblems that need to be solved. A compiler needs to do \emph{Lexical Analysis} of the character stream to create tokens, do \emph{Syntactic Analysis} of the token stream to create a syntax tree, perform \emph{Semantic Analysis} to check for semantic concistency of the syntax tree, perform \emph{Intermediate Code Generation} to create the intermediary representation from the syntax tree, do \emph{Machine-Independent Code Optimization} to refine the intermediary representation for efficiency, perform \emph{Code Generation} from the intermediary representation to the machine code appropriate for the target machine and then lastly perform \emph{Machine-Dependent Code Optimization} for the targeted machine\cite{dragon}.
 
-If an instructor is unable to adapt the visualization tool to the curriculum in the correct manner it will be of little educational value. In order for it to be an effective learning tool it must be adaptable enough to enable active learning engagement which results in a higher level of understanding for the student in regard to Bloom's taxonomy of understanding~\cite{Naps:2002}. 
+The Storm platform lets us implement a language by specifying the BNF syntax of the language in the built-in BNF framework of Storm to create the syntax tree as well as specifying the creation of the intermediary representation from that syntax tree. The other steps mentioned above should be handled by the Storm platform. 
 
 \subsection{Aim}
-The aim of this thesis is to evaluate the 
+%https://win.uantwerpen.be/~sdemey/Tutorial_ResearchMethods/ResearchMethds01_MethodsOvervw2022.pdf
+%Things to consider for a Pilot Case/Demonstrator froma bove p.16/20
+%Proven valuable - There are accepted merits from a previous feasibility study/there is some theory explaining why the idea has merit
+%Does it work for us - Is the context appropriate?
+%Demonstrated on a simple yet representative case - It is not a feasibility study so the case has to be more extensive
+%Proof by construction - We are building a prototype that should be applicable for the case
+%Conclusions - Will be primarily qualitative, i.e. lessons learned.
+%
+%Case study definition
+%An empirical inquiry that investigates a contemporary phenomenon within its real-life context, especially when the bounadaries between the pheonomenon and context aer not clearly evident
 
-The aim of this thesis is to identify the appropriate learning principles to base a progarm visualization tool on for introductory programming courses in Java at LiU, evaluate the possibility of implementing this in \emph{Storm} and then create a system for visualizing the runtime of Java programs in \emph{Storm}.
+Falk has found that the Storm paltform is compatible with Java to an extent and has implemented various Java features to prove that it is possible\cite{}. The aim of this thesis is to build upon what Falk found in his work and highlight whether the Storm platform is an appropriate platform for implementing a Java compiler by extending the implemented functionality to a larger subset of the Java language with more complex functionality.
 
-\emph{Storm} is an interactive compiler platform for creating languages created by Filip Strömbäck. The Storm compiler has support for a language called \emph{Basic Storm} as well as a BNF syntax language that can be used in combination with the \emph{Progvis} program visualization framework and built-in parser support to create a program visualization tool for Java~\cite{Stromback:2017,Stromback:2018,Storm:2023}.
+
 
 \subsection{Research Question}
 In this paper, we will answer the following questions:
 
 \begin{enumerate}
-\item Is it possible to use the BNF syntax language, syntax transforms and parser support in \emph{Storm} to correctly parse Java code?
-\item Is it possible to use the program visualization tool \emph{Progvis} available in \emph{Storm} to visualize the runtime of Java applications in accordance with the learning principles of question 1?
+\item 
+\item 
 \end{enumerate}
 
 \subsection{Delimitations}
-Due to the scope of the project only a subset of Java will be implemented based on teaching requirements of introductory courses for Java at LiU. 
 
-asdasd
-
-
+\section{TODO:}
+\todo[inline]{Find appropriate reference for Falk - Visualisering av Javaprogram i Storm, can't seem to find it published anywhere.}
 
 % BALANCE COLUMNS
 \balance{}
