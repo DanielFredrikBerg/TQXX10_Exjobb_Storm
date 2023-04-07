@@ -16,6 +16,9 @@
 \usepackage{booktabs}
 \usepackage{textcomp}
 
+%User-added
+\usepackage{tikz}
+
 
 % Some optional stuff you might like/need.
 \usepackage{microtype}        % Improved Tracking and Kerning
@@ -102,11 +105,11 @@
 % \todo[inline]{}
 \section{Introduction}
 Storm is a programming language platform that provides the building blocks upon which it is possible to build programming languages that are able to interact freely through exposing an extensible type system, a parser generator and a code generator to all languages which desire to use them \cite{stromback:2018}. The Storm platform itself is language agnostic and the work of Falk\cite{} serves as a feasibility study proving that basic Java functionality can be implemented using the Storm platform.
-
+\todo[inline]{Find appropriate reference for Falk - Visualisering av Javaprogram i Storm, can't seem to find it published anywhere.}
 The interesting question is to what extent the Storm platform is able to handle the implementation of a complex language like Java and also what problems arise along the way considering the lackluster availability of documentation and tutorials due to the relative novelty of the Storm platform.
 
 \subsection{Motivation}
-Creating a compiler from scratch is a time consuming undertaking with a number of distinct subproblems that need to be solved. A compiler needs to do \emph{Lexical Analysis} of the character stream to create tokens, do \emph{Syntactic Analysis} of the token stream to create a syntax tree, perform \emph{Semantic Analysis} to check for semantic concistency of the syntax tree, perform \emph{Intermediate Code Generation} to create the intermediary representation from the syntax tree, do \emph{Machine-Independent Code Optimization} to refine the intermediary representation for efficiency, perform \emph{Code Generation} from the intermediary representation to the machine code appropriate for the target machine and then lastly perform \emph{Machine-Dependent Code Optimization} for the targeted machine\cite{dragon}.
+Creating a compiler from scratch is a time consuming undertaking with a number of distinct subproblems that need to be solved. A compiler needs to do \emph{Lexical Analysis} of the character stream to create tokens, do \emph{Syntactic Analysis} of the token stream to create a syntax tree, perform \emph{Semantic Analysis} to check for semantic concistency of the syntax tree, perform \emph{Intermediate Code Generation} to create the intermediary representation from the syntax tree, do \emph{Machine-Independent Code Optimization} to refine the intermediary representation for efficiency, perform \emph{Code Generation} from the intermediary representation to the machine code appropriate for the target machine and then lastly perform \emph{Machine-Dependent Code Optimization} for the targeted machine~\cite{dragon}.
 
 The Storm platform lets us implement a language by specifying the BNF syntax of the language in the built-in BNF framework of Storm to create the syntax tree as well as specifying the creation of the intermediary representation from that syntax tree. The other steps mentioned above should be handled by the Storm platform. 
 
@@ -130,14 +133,216 @@ Falk has found that the Storm paltform is compatible with Java to an extent and 
 In this paper, we will answer the following questions:
 
 \begin{enumerate}
-\item 
+\item To what extent is the Storm Platform appropriate for implementing an object oriented language?
 \item 
 \end{enumerate}
 
 \subsection{Delimitations}
+Due to the scope of the project only a subset of Java will be implemented based on what time allows.
 
-\section{TODO:}
-\todo[inline]{Find appropriate reference for Falk - Visualisering av Javaprogram i Storm, can't seem to find it published anywhere.}
+\section{Background}
+\todo[inline]{}
+
+
+\section{Theory}
+A typical compiler has two distinct parts that aids in mapping a source into a target program called analysis and synthesis. The analysis part breaks up the source code into its constituent parts using a specified grammatical structure and from these part builds an intermediary representation of the source program often called a syntax tree. The analysis part also collects information about the source program and stores it in the so called symbol table. The synthesis part makes use of the syntax tree and the symbol table to actually construct the target program through createing another intermediary representation in the form of \emph{three-address code}\cite{dragon}.
+\todo[inline]{Figure from page 5 in dragonbook}
+
+The Storm platform already handles a number of these stages for us and thus simplifies the implementation of a language considerable. In order for Storm to handle the input language properly we need to specify the EBNF grammer of the language in the built-in storm syntax language. This will generate a parser that takes care of the analysis part. We then need to specify how the syntax transformations generate the intermediary representation of three-address code instructions and Storm will be able to create the target program handling the synthesis part.
+
+In this chapter we will then need to present the relevant information required to understand what a programming language actually is and the difference between a regular and context free language and how to represent these using Extended Backus-Nauer form(EBNF) that we will use for the analysis part. A brief description of each step in the compiler process will be provided as well as an overview of the Storm platform. In the end the chapter will be tied together with a look at the Java language in relation to these parts.
+\subsection{Language Theory}
+%https://en.wikipedia.org/wiki/Formal_language
+The first thing a compiler does when we as programmers try to compile a source file is that it will read the text in said file and try to make sense of it. The compiler does this by using a parser which is a program that tries to build an intermediary structure, often a parse-tree, based on the input file and a number of specified rules, often expressed in EBNF. In order to understand the parser we need to understand EBNF which in turn requires us to understand what a regular and a context free language is.
+
+A language at it's most basic is just a number of finite strings in an often infinitely large set. Thus it is impossible to list all possible strings and it is instead useful to be able to specify the rules to which the language adheres. 
+
+\subsubsection{Definitions and Notation}
+%ch 4.1 ifrån filips master, skaffa boken Automata and Computability -> se sidan 8-11
+%Kolla upp om jag ska hänvisa till Filips eller om det såg ut så här i boken, just nu är det mer eller mindre helt kopierat vilket känns mindre bra
+To be able to supply a rigorous specification of these types of languages we first need to describe a number of definitions and explain the formal notation~\cite{Kozen:1997}.
+
+An \emph{alphabet}($ \Sigma $) is a finite set of characters.
+
+A \emph{string} over $\Sigma$ is an ordered finite sequence of characters from the \emph{alphabet}. The unique case of an empty string is denoted with the symbol $\varepsilon$.
+
+A \emph{language} is a set of strings, $L$, where $L\subseteq\Sigma^*$.
+
+The \emph{concatenation} of two string $a$ and $b$ is denoted as $ab$.
+
+\emph{Repeated Concatenation} where $a$ is concatenated to itself $n$ times is denoted as $a^n$ when $n>0$. Note that $a^0 = \varepsilon$.
+
+The \emph{length} of a string $x$, denoted $\mid x \mid$, is simply the number of characters in the string x. If $\mid\varepsilon\mid$ then the length is 0. If we are looking at the length of \emph{repeated concatenation} expressions then $\mid a^n \mid = n\mid a \mid$ when $n>0$.
+
+The set of \emph{all strings} over $\Sigma$ is denoted as $\Sigma^*$. This is an infinite set containing all strings of finite length.
+
+\subsubsection{Regular Languages}
+%https://en.wikipedia.org/wiki/Regular_language
+%https://www.cs.odu.edu/~toida/nerzic/390teched/regular/reg-lang/definitions.html
+%http://cs.tsu.edu/ghemri/CS248/ClassNotes/Regular%20Languages%20and%20Regular%20Grammars.pdf
+Looking at the formal definition of a \emph{regular language} we can specify it recursively using a base clause, an inductive and an extremal clause. The base clause states that all primitive \emph{regular languages} for a given \emph{alphabet} are all regular languages in themselves. Expressed in formal notation that would be $\emptyset, \varepsilon, \{x\}$ for any $ x \in \Sigma$ are \emph{regular languages}~\cite{Kozen:1997}.
+
+The inductive clause states that the union of regular languages and concatenation of \emph{regular languages} results in a \emph{regular language}. Additionally generating a new language from an empty set and any arbitrarily chosen elements from a \emph{regular language} will result in a \emph{regular language}. That is, given two \emph{regular languages} $a$ and $b$ then $a \cup b$, $ab$, $a^*$ and $b^*$ are also \emph{regular languages}~\cite{Kozen:1997}.
+
+The extremal clause simply states that nothing is a \emph{regular languages} unless it is obtained from the basic and inductive clause.
+
+%https://en.wikipedia.org/wiki/Regular_expression
+\emph{Regular expressions} are intrinsically linked to \emph{regular languages}, oftentimes \emph{regular languages} are even defined as one that be described using \emph{regular expressions}. Thus it is important to understand how \emph{regular expressions} work. A \emph{regular expression} is a sequence of symbols from the set $R = \Sigma \cup \{\varepsilon \mid*\}$ that is used to specify a set of strings. This sequence, often called a pattern, is used to match subtrings in a textnotation~\cite{Kozen:1997}. 
+
+\emph{Regular expressions} have a formal definition that is more or less equivalent with the one for \emph{regular languages} so we can use unions, concatenation and the Kleene star notation create complex regular expressions that can match a full languagenotation~\cite{Kozen:1997}. Today the implementation of \emph{regular expression} engines typically have the base functionality described here but they have oftentimes also been extended with functionality to match non-regular languages. Thus we will not describe every type of \emph{regular expression} notation in use but rather leave it at this basic level of understanding and explain in more detail if the need arises.
+
+\todo[inline]{TODO: Add an example of Regex}
+
+\subsubsection{Context-free Languages}
+%https://www.cs.odu.edu/~toida/nerzic/390teched/web_course.html
+%https://www.cs.odu.edu/~toida/nerzic/390teched/cfl/cfg.html
+%https://en.wikipedia.org/wiki/Context-free_grammar
+Unfortunately for us as programmers a programming language is not a \emph{regular language}, rather it is what we call a \emph{context-free language}. A \emph{context-free language} is more general than a \emph{regular language}. In fact, the set of all \emph{regular languages} is a subset to the set of all \emph{context-free languages}. Expressed in another way all \emph{regular languages} are \emph{context-free languages} but not all \emph{context-free languages} are \emph{regular languages}.
+
+Much like \emph{regular languages} have \emph{regular expressions} that can describe what they contain a \emph{context-free languages} have \emph{context-free grammar}, typically defined using \emph{extended Backus-Naur form (EBNF)} notation, which will help us understand what a \emph{context free language} actually is. Any \emph{context-free grammar} $G$ consists of a finite set of \emph{nonterminal symbols} $N$, a finite set of \emph{terminal symbols} $\Sigma$, a finite set of \emph{production rules} $P$ and a specially designated \emph{start symbol} $S$ where $S \in N$ notation~\cite{Kozen:1997}.
+
+A \emph{terminal} is a literal symbol that can not be changed using the rules of the grammar. On the other hand a \emph{nonterminal} symbol is one that can be replaced with a \emph{terminal}, another \emph{nonterminal} or a combination of both through the associated \emph{production rule}. \emph{Production rules} maps from a \emph{head} that can be replaced on the left hand side to a \emph{body} that can replace it, written as $head \to body$. The head should contain at least one \emph{nonterminal symbol} and map to at least one \emph{nonterminal symbol} or the $\varepsilon$. Formally this would be expressed as $(\Sigma \cup N)^* N (\Sigma \cup N)^* \to (\Sigma \cup N)^*$notation~\cite{Kozen:1997}.
+
+To put it in simpler terms the \emph{context-free language} described by the \emph{context-free grammar} is simply the set of \emph{terminals} that can be derived from the \emph{nonterminals} using the \emph{production rules}, the important part is that the set consists of only \emph{terminals}.
+
+\todo[inline]{TODO: Add an example of EBNF syntax}
+
+\subsubsection{Parsing}
+%Definitioner för parsning, tokens, terminaler, icke-terminaler, produktionsregler, etc
+Providing a comprehensive overview of all the nuances of parsing is out of scope for this paper but a basic understanding of how a parser works is essential for understanding how to visualize code correctly.
+
+%https://brilliant.org/wiki/pushdown-automata/
+%https://en.wikipedia.org/wiki/Pushdown_automaton
+This does however require us to at the very least briefly touch upon what a \emph{pushdown automata} is. It sounds fancy but in essence it is just a term for a \emph{finite state machine} augmented with some extra memory in the form of a stack. If the \emph{pushdown automata} should be described in a more formal manner it consists of a finite \emph{set of states} $Q$, a finite \emph{input alphabet} $\Sigma$, a finite \emph{stack alphabet} $\Gamma$, a set of \emph{transition functions} $\delta$, a \emph{starting state} $q_{0}$ where $q_{0} \in Q$, an \emph{initial stack symbol} $Z$ where $Z \in \Gamma$ and a set of \emph{accepting states} $F$ where $F \in Q$notation~\cite{Kozen:1997}.
+
+A \emph{transition function} in turn can be defined as \emph{the current state} $p$ where $p \in Q$, the current input $a$ where $a \in \Sigma \cup \varepsilon$, the state that the stack symbol might change us to $q$ where $q \in Q$ and a stack symbol that might cause us to push to the top of the stack $\alpha$ where $\alpha \in \Gamma$. It also has a top stack symbol $A$ where $A \in \Gamma$ that may read $\alpha$, change the state to $q$, or pop $A$ by pushing $\alpha$ to the top of the stack notation~\cite{Kozen:1997}.
+
+When we begin parsing the \emph{start symbol} will be pushed to the stack, if it is not the beginning then. After that the parser will repeat until it reaches an accepted state using the following stepsnotation~\cite{Kozen:1997}:
+\begin{itemize}
+\item{If there is a variable on top of the \emph{stack} then we non-deterministically pick a production rule with a matching \emph{head} and substitute for the \emph{body}.}
+\item{If there is a terminal $\alpha$ on the \emph{input} then read the next symbol of the input. If it matches $\alpha$ then we repeat, otherwise we reject this branch of the non-determinism.}
+\item{If we are at the end of \emph{input} and the only thing left in the \emph{stack} is the \emph{start symbol} then we accept.}
+\end{itemize}
+
+For brevity we will skip over the internal workings of how a parser uses this theory to create a parse table and turn that into a parse tree because it is not relevant for this paper. We do urge the curious reader to study how LR(0), SLR(1), LR(1) and Earley parsing works and how they handles non-ambigious and ambigious grammar because it is a fascinating subject.
+
+For our intents and purposes it is enough to know that we arrive at a state where we have an \emph{ordered rooted tree} that represents the \emph{syntactic structure} of an input string according to a specified \emph{context-free grammar}. In the created tree the root node will be the \emph{starting symbol}, the branch nodes are \emph{nonterminals} and the leaf nodes are \emph{terminals}~\cite{Kozen:1997}. The parse tree is an intermediary representation used by the compiler that represents the syntactic structure, this would then be used further down the line by the compiler for semantic analysis and code generation.
+
+\todo[inline]{TODO: Add an example of a parse-tree}
+
+\subsection{Compiler Theory}
+%\todo[inline]{}
+As mentioned in the introduction of this section the compiler can be divided into the analysis and the synthesis parts. It can however be further subdivided into more distinct stages as presented below.
+
+\subsubsection{Lexical Analysis}
+The first phase is where the compiler reads the stream of characters from the source program and groups the characters into lexemes, which is just a fancy name for a meaningful sequence of characters. For each lexeme the compiler will then output a so called token which consists of two things, a token name and an attribute value. The attribute value points to an entry in the symbol table for this token that holds information about the token such as the token name and type needed for semantic analysis and code generation~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+%\begin{tikzpicture}
+%  \node{bla}
+  %child {<id, 1>}
+  %child {+}
+%\end{tikzpicture}
+
+%\begin{figure}[h]
+%\center
+%\begin{tikzpicture}[edge from parent/.style={draw,-latex}]
+%  edge from parent[->]
+%  \node{ position = initial + rate * 60}
+%  child{ node [draw]{Lexical Analyzer}
+%    child{ node {<id,1> <=> <id,2> <+> <id,3> <*> <60>}
+%    }
+%  }
+%  ;
+%\end{tikzpicture}
+%\caption{Lexical analysis}
+%\end{figure}
+
+
+\subsubsection{Syntax Analysis}
+The second phase uses the token stream generated from the Lexical Analysis and produces a so called syntax tree. The syntax tree captures the grammatical structure of the token stream using a specified context free grammar. The interior nodes represent operations and the children of that node the operands. This ensures that the ordering of operations is consistent with normal conventions~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+%\begin{figure}[h]
+%\center
+%\begin{tikzpicture}[edge from parent/.style={draw,-latex}]
+%  edge from parent[->]
+%  \node{ <id,1> <=> <id,2> <+> <id,3> <*> <60>}
+%  child{ node [draw]{Syntactic Analyzer}
+%    child{ node {=}
+%      child{node {<id,1>}
+%      }
+%      child{node {+}
+%        child{node {<id,2>}
+%      }
+%        child{node {*}
+%          child{node {<id,3>}
+%      }
+%      child{node {60}
+%      }
+%      }
+%      }
+%    }
+%  }
+%  ;
+%\end{tikzpicture}
+%\caption{Syntax analysis}
+%\end{figure}
+
+
+
+\subsubsection{Semantic Analysis}
+In the third phase the compiler uses the syntax tree generated from the Syntax Analyser and information in the symbol table to check the source program for semantic consistency. This is typically the part where type checking is performed by checking that each operator has matching operands, although coercion from one type to another might be allowed in some cases. The type information is also saved in either the syntax tree itself or the symbol table for use during the intermediary code generation in later phases~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+
+\subsubsection{Intermediate Code Generation}
+When the compiler has performed the Syntax- and Semantic Analysis the compiler will typically produce one or more low-level intermediary representations. It is important that this intermediare representation is easy to produce and easy to translate into machine code for the target machine. In our case this will take the form of a type of \emph{three-address code} that is a set of assembly-like instructions with three operands, although in some cases it is actually less than three operands in an instruction. The \emph{three-address instructions} can have at most one operator on the right hand side so the instructions fix the order of operations. The compiler will typically have to be able to handle creating temporary name to hold values when the instructions are used as well~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+
+\subsubsection{Machine-Independent Code Optimization}
+This phase attempts to improve upon the intermediary code produced in the previous phase so that it becomes better, typically faster. The amount of time spent on this phase can vary a lot from compiler to compiler and there are a great number of algorithms for code optimization that all are out of scope for a discussion in this paper and for our intents and purposes this will be handled by the Storm platform~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+
+\subsubsection{Code Generation}
+The Code Generation phase takes the intermediary code produced in the precious phase and turns it into machine code for the target machine that perform the same task. One important aspect of this phase is that the allocation of registers and memory locations for the code takes place~\cite{dragon}.
+\todo[inline]{Subset of figure from page 7 dragonbook}
+
+\subsection{Storm}
+\emph{Storm} is an interactive compiler platform for creating languages created by Filip Strömbäck. That \emph{Storm} is an interactive compiler means that it is designed to be executed in the background while programs are being developed. What this means is that the program is compiled function by function on demand and it also enables \emph{Storm} to reload parts of a program while it is running, such as functions. This enabled the compiler to provide information about the program being developed while it is being developed. One example of this is the \emph{Storm} language server that provides syntax highlighting for all supported languages and language extensions to an editor~\cite{Storm:2023}.
+
+\emph{Storm} also exposes an extensible type system, a parser and code generation to all languages along with a standardized interface enabling seamless interaction between languages. While \emph{Storm} is mostly a language platform for creating languages it would be rather useless unless it had some built-in functionality that we can use. Thus \emph{Storm} comes with two languages. \emph{Basic Storm} is a general purpose programming language with a syntax that resembles C or Java that tries to closely resemble what is exposed by the compiler. There is also a \emph{syntax language}, which \emph{Basic Storm} uses, that can be used to extend or implement new languages~\cite{Storm:2023}.
+
+\subsubsection{Named Entities and the Name Tree}
+The focus of the framework is extensibility and it is designed in such a way that it is easy to implement languages that can be extended with new syntax and semantics. One very interesting feature is that the implemented languages are able to interact freely through what is called a shared \emph{name tree}. This is where all entities such as functions and types are stored, although a language implementation can really store whatever it wants in the \emph{name tree}~\cite{Storm:2023}.
+
+If we look a little bit closer at the \emph{name tree} and try to be more specific about its functionality then it technically contains a set of \emph{named entities}. A \emph{named entity} in turn is an object that has a name and zero or more parameters. They can be functions, types or \emph{name sets}. A \emph{name set} is simply an entity which stores a set of \emph{named entities} as its children. The attentive reader might now have noted that firstly this enables hierarchical structures and secondly that the \emph{name tree} is simply a glorified \emph{name set} that represents the global scope~\cite{Storm:2023}.
+
+\subsubsection{Basic Storm}
+\emph{Basic Storm} is a general purpose programming language with a syntax that resembles C or Java that tries to closely resemble what is exposed by the compiler. It does however not resemble C or Java when one takes a look under the hood. Some immediate differences is that \emph{Basic Storm} takes a cue from LISP and treats most things as expressions including blocks, if statements and variable declarations. It also evaluates blocks to the value of their last expression leading to implicit returns from functions in the absence of a return statement~\cite{Storm:2023}.
+
+Because \emph{Basic Storm} is implemented using the built in \emph{Syntax Language} and parser it is extensible in the same way as any other language. This is the reason behind many of the design choices, it makes extensibility of the language easy~\cite{Storm:2023}. Obviously describing the full language is outside the scope of this paper but a sample will be provided below to give an idea about the syntax of the language. More information regarding \emph{Basic Storm} can be found on the official website \url{http://storm-lang.org} for those amongst you with an appetite for proficiency.
+
+\subsubsection{Syntax Language}
+The \emph{syntax language} is used to specify the \emph{context-free grammar} of a language which is in turn used by the built in parser in \emph{Storm} to generate the \emph{parse tree} from a given input. It does this by producing two types of entities. The first type of entity is called a \emph{rule} and it is a representation of a \emph{nonterminal}. The second type of entity is called a \emph{production} and it is a representation of a \emph{production rule}. Both of these types of entities are stored in the \emph{name tree} and thus they are available to all languages in \emph{Storm}~\cite{Storm:2023}.
+
+Each token specified in the \emph{syntax language} is either a \emph{rule} or a regular expression enclosed by double quotes. A \emph{production} is made up of a number of tokens separated by a colon$(:)$ with the \emph{head} to the left of the colon and the \emph{body} to the right of the colon~\cite{Storm:2023}.
+
+\todo[inline]{TODO: Add an example of the Syntax Language, preferrably building on the previous EBNF example.}
+
+\subsubsection{Syntax Transformations}
+The \emph{syntax language} can also specify how to transform the \emph{parse tree} into an \emph{abstract syntax tree} in such a way that it is useful for further processing. When the parser creates the nodes in the \emph{parse tree} the class they are implemented as have an abstract function fittingly called \emph{transform}.
+
+The \emph{syntax transformation} notation for the \emph{syntax language} simply lets us override this function in a convenient way. This is done in the \emph{production} declaration indicated by a $\Rightarrow$. This part indicates what should be returned from the transform function and it can be either a variable or a function call with parameters. The parameters that are available are the ones that are specified in the rule declaration or a captured token~\cite{Storm:2023}.
+
+\todo[inline]{TODO: Add an example of a syntax transformation.}
+
+\subsection{Java}
+\todo[inline]{TBD}
+\section{Method}
+\subsection{Data collection}
+\subsection{Implementation}
+\subsection{Evaluation}
+
+
+
 
 % BALANCE COLUMNS
 \balance{}
