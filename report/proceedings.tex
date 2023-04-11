@@ -125,7 +125,7 @@ The Storm platform lets us implement a language by specifying the BNF syntax of 
 %Case study definition
 %An empirical inquiry that investigates a contemporary phenomenon within its real-life context, especially when the bounadaries between the pheonomenon and context aer not clearly evident
 
-Falk has found that the Storm paltform is compatible with Java to an extent and has implemented various Java features to prove that it is possible\cite{}. The aim of this thesis is to build upon what Falk found in his work and highlight whether the Storm platform is an appropriate platform for implementing a Java compiler by extending the implemented functionality to a larger subset of the Java language with more complex functionality.
+Falk has found that the Storm platform is compatible with Java to an extent and has implemented various Java features to prove that it is possible\cite{}. The aim of this thesis is to build upon what Falk found in his work and highlight whether the Storm platform is an appropriate platform for implementing a Java compiler by extending the implemented functionality to a larger subset of the Java language with more complex functionality.
 
 
 
@@ -337,12 +337,63 @@ The \emph{syntax transformation} notation for the \emph{syntax language} simply 
 \subsection{Java}
 \todo[inline]{TBD}
 \section{Method}
-\subsection{Data collection}
-\subsection{Implementation}
-\subsection{Evaluation}
+%https://www.researchprospect.com/action-research-for-my-dissertation-the-dos-and-the-donts/
+%https://www.researchprospect.com/should-i-use-primary-or-secondary-research-in-my-dissertation/
+%https://www.researchprospect.com/category/research-methodology/
+%https://www.researchprospect.com/quantitative-vs-qualitative-research/
+%https://www.researchprospect.com/what-are-the-different-research-methods-for-dissertation/
+%https://www.researchprospect.com/inductive-and-deductive-reasoning/
+%https://emeritus.org/in/learn/types-of-research-design/
+
+% === Things to consider ===
+%What is the purpose of the research?
+%What is the chosen research philosophy? Interpretivism/positivism/post-positivism/pragmatism/constructivism
+%What data collection techniques are we using? Are they quantitative or qualitative?
+%How do we analyze the data?
+%What kind of resources are we going to be using?
+%Why did we choose these methods? Argue for why they are appropriate.
+%How do the chosen methods affect external and internal validity?
+%Is our research Inductive or Deductive?
+
+%=== Example topics ===
+%Research Design
+%Philosophical Approach
+%Data Collection Methods
+%Research Limitations
+%Ethical Considerations(if applicable)
+%Data Analysis Methods
+
+% === Our thesis ===
+%Primary research in the sense that there is no other research focused on doing what we are doing using the Storm platform. 
+%We will use limited data collection methods since we are doing no surveys or alike. We will have to gather information about how Java actually works which will pose a problem due to it being proprietary. Otherwise it will be information regarding how Storm works and how compilers work. For storm we look at the documentation, published articles regarding Storm, as well as "interviewing" Filip. For Compiler theory we will simply look to the dragon book.
+%I assume it will be seen as a more qualitative research project since we do not gather and collect data to conduct statistical analysis on. We will not draw conclusion from gathered data in that sense of the word. We will use action research to conduct our project so it will be qualitative and inductive ( https://www.emeraldgrouppublishing.com/how-to/research-methods/carry-out-action-research ) 
+
+%About diary form thesis:
+%https://seamk.libguides.com/instructionsforbachelorsthesis/goals/differentformsofthethesis
+%https://haagahelia.contenthub.fi/NiboWEB/haagahelia/getPublicFile.do?uuid=11812553&inline=false&ticket=9ad89eb1a407932527448326b8f74eb3&type=original
+%https://oppimateriaalit.jamk.fi/opinnaytetyo/en/thesis-implementation-methods-and-results/diary-form-thesis/
+ 
+\subsection{Research Design and Philosophical Approach}
+The research of this thesis aims to examine the suitability of the Storm platform for implementing a compiler of a complex object oriented language. Precious little have been written about the Storm platform in contemporary research due to its novelty and relative obscurity as a tool. Thus we will mostly conduct primary research regarding this topic. We have chosen to conduct the thesis in accordance with action research principles. Although a relatively unorthodox choice it is a suitable one because the researchers will be directly involved in the project and evaluating the progress in each step of the implementation. Due to the close involvement in both creating and evaluating the system we can not consider it a case study and action research seems to be the most appropriate method to adapt for this purpose. Action research puts an emphasis on the so called research cycle which is a learning cycle focusing on systematic reflection in order to enable the researcher to truly understand the area researched. At the end of each cycle there will be a period of evaluating of the work that has been done.
+
+Because of the cyclical nature of action research it was also appropriate for the project to adopt an agile framework for the actual development work. Since we wanted to focus on the action research tenants more than the agile framework we chose to use the kanban method for organizing our work since kanban has relatively few artifacts to adhere to in comparison to say a scrum method with daily standups, sprint planning, etc. Since we wanted to keep our kanban board available at all times we chose to use Trello as a tool for keeping track of our kanban board. The kanban board will be organized into four columns, to-do, in-progress, completed and evaluated. As is usual in kanban the work will be broken down into epics and stories. The action research cycle will be equivalent to one completed epic, thus it will be variable in time and we need to consider the appropriate level of the epic when breaking down our work.
+
+%Discuss that it is qualitative and inductive
+The philosophical approach of action research is inductive in the sense that we hope to be able to use the action research cycles and the evaluation to build a framework of guidelines for implementing an object oriented compiler in the Storm platform and evaluate the appropriateness of it as a tool for that.
+
+
+\subsection{Methods of Data Collection And Data Analysis}
+In order to facilitate accurate evaluation of each subproblem solved in development the researchers are required to keep a developer diary. There should be an entry per story complete with a date and time of the start and end of the work, a brief description of the problem, what went well, what went poorly, what obstacles were identified, what solutions were attempted, what theoretical framework it is related to, and what the eventual solution to the problem was. 
 
 
 
+
+
+
+
+\subsection{Limitations}
+\todo[inline]{TODO: Write about external validity, going to be bad because we are doing an inductive things so we can not generalize from it etc etc}
+\todo[inline]{TODO: Write about limitations from doing a qualitative methodology}
 
 % BALANCE COLUMNS
 \balance{}
