@@ -15,6 +15,7 @@ To create a local copy and compile from source
 - sudo apt install libgl-dev -y
 - sudo apt install libopenal-dev -y
 - sudo apt install libssl-dev -y
+- sudo apt install make -y
 - mymake Main
 
 

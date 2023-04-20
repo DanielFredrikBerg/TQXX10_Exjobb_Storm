@@ -1,0 +1,6 @@
+=== Meeting ===
+- Om man ska implementera någonting ifrån scratch så lägger man till en fil i
+'storm/root/lang/filändelse/fil' och letar efter en reader
+- Reader objektet är en abstrakt-ish klass, det gör ingenting åt er och vi ska fylla i funktionalitet själva.
+- Reader.h
+- readTypes, resolveTypes, readFunctions, resolveFunctions kommer vara intressanta för oss.
