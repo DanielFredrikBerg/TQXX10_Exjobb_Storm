@@ -1,0 +1,37 @@
+Vi fick en intro från Filip och jag tror jag förstår vårt översiktliga arbetsflöde:
+Först skrivs EBNF regler i en fil med filnamn <språknamn> och ändelse .bnf i /storm/root/lang/<språknamn>/ så den får path /storm/root/lang/<språknamn>/syntax.bnf
+
+I main.bs (skrivet i basic storm) implementeras klassen FileReader (/storm/Compiler/FileReader.h) med dess fyra nedersta funktioner:
+(implementeras i basic storm)
+* readTypes() - "läs alla Java-typer och stoppa in dem i namnträdet."
+* resolveTypes() - Evaluerar(?) typerna. Fråga ->  Vad är menat att hända här?
+* readFunctions() - Tar reda på vilka funktioner som finns.
+* resolveFunctions() - Evaluerar(?) typerna. Fråga -> Vad är menat att hända här?
+
+FileReader läser in en fil i taget. PackerReader är en loop med FileReader vilket möjliggör att läsa in flertalet filer.
+
+För basic Aritmetik:
+1. Överlagra readTypes()
+1.a. Definera rotnoden för parsern: Parser<RootRule> parser.
+
+Expr@ <- @-tecknet betyder att det ska kompileras vid ett senare tillfälle.
+Utan @-tecken så slås referensen till föräldraklassen upp.
+
+Det behövs att toppnivån fångas och transformeras.
+
+Det får finnas max en parentes per produktion. Produktion är det som finns efter regeldefinitionen per rad efter :
+Bindesträck verkar som skiljetecken.
+
+Documentation för Storm fås utav M-x storm-doc och sedan vilken sak man vill ha separerade med punkt ex: core.lang.bnf.någonting
+
+Whats in the base node class of basic storm.
+lang.bnf.Node:
+* pos - position in the parsed file.
+* me - referens till det egna objektet?
+* info - general info about the node. Fråga -> Är det specifikt för objektet eller klassen?
+
+Finns tre register i storlekarna 32 och 64 bitar. Storleken för pekare varierar.
+
+Namnuppslagning sköts av Resolve.cpp
+
+
