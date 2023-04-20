@@ -1,0 +1,20 @@
+=== 14-04-2023 ===
+- Stäm av med Filip om det verkligen är en kompilator.
+- Stäm av med Filip hur det är lämpligt att dela upp cyklerna det är ok enl. Jody.
+
+=== Metod ===
+- Själva upplägget låter bra, men vet inte om frågorna i sig alignar med metoden
+- Med hjälp av evalueringen i varje subproblem så kan vi säkert svara på fråga 1, se till att motivera tydligare hur metoden är behjälplig för att svara på fråga 1
+- Fråga 2 borde man kanske formulera om tex så att det ska skapa guidelines och använder sig av evalueringarna för att komma fram till dem
+- Som vi diskuterade borde vi nog stryka fråga 3,
+- Så vi har två delar, hur lämpligt det är och sedan givet att det är lämpligt producerar guidelines.
+- Bör kunna börja research question delen vilka delar som våra research questions berör, vilka grejer som implementeras.
+
+
+===  ===
+
+
+===  ===
+
+
+===  ===
