@@ -45,6 +45,35 @@ Might have to change the path to ~/storm/root as well as ~/storm/debug/Storm if 
 (add-to-list 'auto-mode-alist '("\\.bs$" . storm-mode))
 (add-to-list 'auto-mode-alist '("\\.bnf$" . storm-mode))
 ```
+### Command Line Arguments
+mymake changes directory into the Main directory so the path should be relative from there when using command line arguments. All below commands assume that you are in the /storm directory.
+
+To see available arguments:
+```
+mm Main -?
+mm Main -a -?
+```
+
+To read file:
+```
+mm Main -a -i ../file.java
+mm Main -a -I name ../file.java
+```
+
+To read and run a file that has a main function:
+```
+mm Main -a ../file.java
+mm Main -a -i ../file.java -f file.main
+```
+
+To run a function from a file:
+```
+mm Main -a -i ../file.java -f file.main
+```
+
+
+
+
 ## Links
 - [Kanban Board](https://trello.com/b/moYnQ2o4/thesis)
 - [Anvisningar Exjobb](https://www.ida.liu.se/edu/ugrad/thesis/templates/Exjobb_instruction_150313.pdf)
