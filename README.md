@@ -4,9 +4,13 @@
 
 ## Storm
 ### Install dependencies
+This needs to be cloned manually in order to get the mm-compile.el file that is not included in the apt package. If you do not use emacs you can install mymake using 'sudo apt install mymake'
+```
+git clone https://github.com/fstromback/mymake.git
+```
+
 ```
 sudo apt install make -y && 
-sudo apt install mymake -y &&
 sudo apt install libgtk-3-dev -y &&
 sudo apt install libgl-dev -y &&
 sudo apt install libopenal-dev -y &&
@@ -30,21 +34,6 @@ mm Main/
 ```
 Sometimes git gets weird and does not update all directories correctly. Use the 'git status' command to see where there are missing files and then run 'git checkout -f' in each of those directories.
 
-## Emacs Setup
-Add below to your .emacs file and then you will have correct syntax highlighting for storm as well as the ability to use the storm-docs in emacs by using M-x storm-doc. 
-
-Might have to change the path to ~/storm/root as well as ~/storm/debug/Storm if you did clone storm to your home directory.
-```
-(load "~/mymake/mm-compile.el")
-(load "~/storm/Plugin/emacs.el")
-(setq mymake-command "mm")
-(setq storm-mode-root "~/storm/root")
-(setq storm-mode-compiler "~/storm/debug/Storm")
-(setq storm-mode-include '())
-(setq storm-mode-compile-compiler t)
-(add-to-list 'auto-mode-alist '("\\.bs$" . storm-mode))
-(add-to-list 'auto-mode-alist '("\\.bnf$" . storm-mode))
-```
 ### Command Line Arguments
 mymake changes directory into the Main directory so the path should be relative from there when using command line arguments. All below commands assume that you are in the /storm directory.
 
@@ -73,6 +62,55 @@ mm Main -a -i ../file.java -f file.main
 
 
 
+
+## Emacs 
+### Setup
+Add below to your .emacs file and then you will have correct syntax highlighting for storm as well as the ability to use the storm-docs in emacs by using M-x storm-doc. 
+
+Might have to change the path to ~/storm/root as well as ~/storm/debug/Storm if you did clone storm to your home directory.
+```
+(load "~/mymake/mm-compile.el")
+(load "~/storm/Plugin/emacs.el")
+(setq mymake-command "mm")
+(setq storm-mode-root "~/storm/root")
+(setq storm-mode-compiler "~/storm/debug/Storm")
+(setq storm-mode-include '())
+(setq storm-mode-compile-compiler t)
+(add-to-list 'auto-mode-alist '("\\.bs$" . storm-mode))
+(add-to-list 'auto-mode-alist '("\\.bnf$" . storm-mode))
+```
+### Commands
+To see various command you can look at the ~/mymake/mm-compile.el file but the most important ones are compiling and looking at the next error.
+
+Before using the compile command you have to modify the ~/storm/buildconfig file. The default setting of the buildconfig file is that it will run 'Test' but that line should be removed and substituted with the compile command to the file you want to compile. The following is correct assuming that you have a file you want to run named bla.bla in the ~/storm/ directory.
+```
+#Test
+Main -a ../bla.bla
+```
+- Compile from in Emacs
+```
+M-p
+```
+- Go to next error 
+```
+M-n
+```
+Since Storm uses lazy compilation to a great extent it can be a good idea to set up a .bs file that runs in the top lop and compiles the specific package you have created.
+
+/storm/java-test.bs
+```
+use lang:bs:macro;
+
+void main(){
+	named{lang:bla}.compile;
+}
+```
+We then need to change the /storm/buildconfig file to compile this file instead.
+
+/storm/buildconfig
+```
+Main -a ../java_test.bs
+```
 
 ## Links
 - [Kanban Board](https://trello.com/b/moYnQ2o4/thesis)
