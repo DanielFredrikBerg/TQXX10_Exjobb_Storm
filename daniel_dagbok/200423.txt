@@ -1,0 +1,6 @@
+
+
+Fråga -> Vilken returtyp borde jag ha för topregeln i .bnf filen för att kunna köra det mesta?
+Fråga -> Läggs bnf regler för språk generellt i en .bnf fil under katalogen /lang/språknamn/?
+Fråga -> Hur kan jag testa implementerad funktionalitet?
+Fråga -> Hur kan man köra fristående filer med java i Storm?
